@@ -1,0 +1,349 @@
+workbook = Workbook()
+        sheet = workbook.active
+
+        # sheet.append(list(xml_dict['ENVELOPE']["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"]["VOUCHER"].keys()))
+        sheet.append(list(xml_dict['ENVELOPE']["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"].keys()))
+        sheet.append([xml_dict['ENVELOPE']["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"]])
+        # print("xml_dict_voucher", xml_dict['ENVELOPE']["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"])
+        # try:
+        for item in xml_dict['ENVELOPE']["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]:
+            # print(item["VOUCHER"]["DATE"], item["VOUCHER"]["REFERENCEDATE"], item["VOUCHER"]["VOUCHERTYPENAME"])
+            # sheet.append([item["VOUCHER"]["DATE"], item["VOUCHER"]["REFERENCEDATE"], item["VOUCHER"]["VOUCHERTYPENAME"]])
+            sheet.append(["@xmlns:UDF", item["@xmlns:UDF"]])
+            sheet.append(['VOUCHER'])
+            sheet.append(['', '@REMOTEID', item["VOUCHER"].get("@REMOTEID",'')])
+            sheet.append(['', '@VCHKEY', item["VOUCHER"].get("@VCHKEY",'')])
+            sheet.append(['', '@VCHTYPE', item["VOUCHER"].get("@VCHTYPE",'')])
+            sheet.append(['', '@ACTION', item["VOUCHER"].get("@ACTION",'')])
+            sheet.append(['', '@OBJVIEW', item["VOUCHER"].get("@OBJVIEW",'')])
+            if 'ADDRESS.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'ADDRESS.LIST',]) 
+                sheet.append(['', '', '@TYPE', item["VOUCHER"]['ADDRESS.LIST'].get("@TYPE",'')])
+                sheet.append(['', '', 'ADDRESS', item["VOUCHER"]['ADDRESS.LIST']["ADDRESS"][0]])
+                if len(item["VOUCHER"]['ADDRESS.LIST']["ADDRESS"][1:]) > 0:
+                    for i in item["VOUCHER"]['ADDRESS.LIST']["ADDRESS"][1:]:
+                        sheet.append(['', '', '', i])
+            
+            if 'BASICBUYERADDRESS.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'BASICBUYERADDRESS.LIST',]) 
+                sheet.append(['', '', '@TYPE', item["VOUCHER"]['BASICBUYERADDRESS.LIST'].get("@TYPE",'')])
+                sheet.append(['', '', 'BASICBUYERADDRESS', item["VOUCHER"]['BASICBUYERADDRESS.LIST']["BASICBUYERADDRESS"][0]])
+                if len(item["VOUCHER"]['BASICBUYERADDRESS.LIST']["BASICBUYERADDRESS"][1:]) > 0:
+                    for i in item["VOUCHER"]['BASICBUYERADDRESS.LIST']["BASICBUYERADDRESS"][1:]:
+                        sheet.append(['', '', '', i])
+            
+            if 'BASICORDERTERMS.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'BASICORDERTERMS.LIST',]) 
+                sheet.append(['', '', '@TYPE', item["VOUCHER"]['BASICORDERTERMS.LIST'].get("@TYPE",'')])
+                sheet.append(['', '', 'BASICORDERTERMS', item["VOUCHER"]['BASICORDERTERMS.LIST']["BASICORDERTERMS"][0]])
+                if len(item["VOUCHER"]['BASICORDERTERMS.LIST']["BASICORDERTERMS"][1:]) > 0:
+                    for i in item["VOUCHER"]['BASICORDERTERMS.LIST']["BASICORDERTERMS"][1:]:
+                        sheet.append(['', '', '', i])
+            if 'OLDAUDITENTRYIDS.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'OLDAUDITENTRYIDS.LIST',]) 
+                sheet.append(['', '', '@TYPE', item["VOUCHER"]['OLDAUDITENTRYIDS.LIST'].get("@TYPE",'')]) 
+                sheet.append(['', '', 'OLDAUDITENTRYIDS', item["VOUCHER"]['OLDAUDITENTRYIDS.LIST'].get("OLDAUDITENTRYIDS",'')])
+
+            if 'DATE' in item["VOUCHER"]:
+                date = item["VOUCHER"].get("DATE",'')
+                if date not in ['', ' ', None, 'null']:
+                    date = date_format_converter(date)
+                    sheet.append(['', 'DATE',date])
+                else:
+                    sheet.append(['', 'DATE',''])
+
+            if 'REFERENCEDATE' in item["VOUCHER"]:
+                date = item["VOUCHER"].get("REFERENCEDATE",'')
+                if date not in ['', ' ', None, 'null']:
+                    date = date_format_converter(date)
+                    sheet.append(['', 'REFERENCEDATE',date])
+                else:
+                    sheet.append(['', 'REFERENCEDATE',''])
+
+            if 'GUID' in item["VOUCHER"]:
+                sheet.append(['', 'GUID', item["VOUCHER"].get("GUID",'')])
+                
+            if 'NARRATION' in item["VOUCHER"]:
+                sheet.append(['', 'NARRATION', item["VOUCHER"].get("NARRATION",'')])
+
+            if 'VOUCHERTYPENAME' in item["VOUCHER"]:
+                sheet.append(['', 'VOUCHERTYPENAME', item["VOUCHER"].get("VOUCHERTYPENAME",'')])
+                
+            if 'REFERENCE' in item["VOUCHER"]:
+                sheet.append(['', 'REFERENCE', item["VOUCHER"].get("REFERENCE",'')])
+            
+            if 'VOUCHERNUMBER' in item["VOUCHER"]:
+                sheet.append(['', 'VOUCHERNUMBER', item["VOUCHER"].get("VOUCHERNUMBER",'')])
+                
+            if 'PARTYLEDGERNAME' in item["VOUCHER"]:
+                sheet.append(['', 'PARTYLEDGERNAME', item["VOUCHER"].get("PARTYLEDGERNAME",'')])
+
+            if 'CSTFORMISSUETYPE' in item["VOUCHER"]:
+                sheet.append(['', 'CSTFORMISSUETYPE', item["VOUCHER"].get("CSTFORMISSUETYPE",'')])
+                
+            if 'CSTFORMRECVTYPE' in item["VOUCHER"]:
+                sheet.append(['', 'CSTFORMRECVTYPE', item["VOUCHER"].get("CSTFORMRECVTYPE",'')])
+
+            if 'PERSISTEDVIEW' in item["VOUCHER"]:
+                sheet.append(['', 'PERSISTEDVIEW', item["VOUCHER"].get("PERSISTEDVIEW",'')])
+                
+            if 'VCHGSTCLASS' in item["VOUCHER"]:
+                sheet.append(['', 'VCHGSTCLASS', item["VOUCHER"].get("VCHGSTCLASS",'')])
+
+            if 'ENTEREDBY' in item["VOUCHER"]:
+                sheet.append(['', 'ENTEREDBY', item["VOUCHER"].get("ENTEREDBY",'')])
+                
+            if 'DIFFACTUALQTY' in item["VOUCHER"]:
+                sheet.append(['', 'DIFFACTUALQTY', item["VOUCHER"].get("DIFFACTUALQTY",'')])
+
+            if 'ISMSTFROMSYNC' in item["VOUCHER"]:
+                sheet.append(['', 'ISMSTFROMSYNC', item["VOUCHER"].get("ISMSTFROMSYNC",'')])
+                
+            if 'ASORIGINAL' in item["VOUCHER"]:
+                sheet.append(['', 'ASORIGINAL', item["VOUCHER"].get("ASORIGINAL",'')])
+
+            if 'AUDITED' in item["VOUCHER"]:
+                sheet.append(['', 'AUDITED', item["VOUCHER"].get("AUDITED",'')])
+                
+            if 'FORJOBCOSTING' in item["VOUCHER"]:
+                sheet.append(['', 'FORJOBCOSTING', item["VOUCHER"].get("FORJOBCOSTING",'')])
+
+            if 'ISOPTIONAL' in item["VOUCHER"]:
+                sheet.append(['', 'ISOPTIONAL', item["VOUCHER"].get("ISOPTIONAL",'')])
+            
+            if 'EFFECTIVEDATE' in item["VOUCHER"]:
+                date = item["VOUCHER"].get("EFFECTIVEDATE",'')
+                if date not in ['', ' ', None, 'null']:
+                    date = date_format_converter(date)
+                    sheet.append(['', 'EFFECTIVEDATE',date])
+                else:
+                    sheet.append(['', '',''])
+
+            if 'USEFOREXCISE' in item["VOUCHER"]:
+                sheet.append(['', 'ISFORJOBWORKIN', item["VOUCHER"].get("USEFOREXCISE",'')])
+            
+            if 'ISFORJOBWORKIN' in ["VOUCHER"]:
+                sheet.append(['', 'ISFORJOBWORKIN', item["VOUCHER"].get("ISFORJOBWORKIN",'')])
+            
+            if 'ALLOWCONSUMPTION' in item["VOUCHER"]:
+                sheet.append(['', 'ALLOWCONSUMPTION', item["VOUCHER"].get("ALLOWCONSUMPTION",'')])
+
+            if 'USEFORINTEREST' in item["VOUCHER"]:
+                sheet.append(['', 'USEFORINTEREST', item["VOUCHER"].get("USEFORINTEREST",'')])
+            
+            if 'USEFORGAINLOSS' in item["VOUCHER"]:
+                sheet.append(['', 'USEFORGAINLOSS', item["VOUCHER"].get("USEFORGAINLOSS",'')])
+            
+            if 'USEFORGODOWNTRANSFER' in item["VOUCHER"]:
+                sheet.append(['', 'USEFORGODOWNTRANSFER', item["VOUCHER"].get("USEFORGODOWNTRANSFER",'')])
+            
+            if 'USEFORCOMPOUND' in item["VOUCHER"]:
+                sheet.append(['', 'USEFORCOMPOUND', item["VOUCHER"].get("USEFORCOMPOUND",'')])
+            
+            if 'USEFORSERVICETAX' in item["VOUCHER"]:
+                sheet.append(['', 'USEFORSERVICETAX', item["VOUCHER"].get("USEFORSERVICETAX",'')])
+            
+            if 'ISEXCISEVOUCHER' in item["VOUCHER"]:
+                sheet.append(['', 'ISEXCISEVOUCHER', item["VOUCHER"].get("ISEXCISEVOUCHER",'')])
+            
+            if 'EXCISETAXOVERRIDE' in item["VOUCHER"]:
+                sheet.append(['', 'EXCISETAXOVERRIDE', item["VOUCHER"].get("EXCISETAXOVERRIDE",'')])
+            
+            if 'USEFORTAXUNITTRANSFER' in item["VOUCHER"]:
+                sheet.append(['', 'USEFORTAXUNITTRANSFER', item["VOUCHER"].get("USEFORTAXUNITTRANSFER",'')])
+            
+            if 'IGNOREPOSVALIDATION' in item["VOUCHER"]:
+                sheet.append(['', 'IGNOREPOSVALIDATION', item["VOUCHER"].get("IGNOREPOSVALIDATION",'')])
+            
+            if 'EXCISEOPENING' in item["VOUCHER"]:
+                sheet.append(['', 'EXCISEOPENING', item["VOUCHER"].get("EXCISEOPENING",'')])
+            
+            if 'USEFORFINALPRODUCTION' in item["VOUCHER"]:
+                sheet.append(['', 'USEFORFINALPRODUCTION', item["VOUCHER"].get("USEFORFINALPRODUCTION",'')])
+            
+            if 'ISTDSOVERRIDDEN' in item["VOUCHER"]:
+                sheet.append(['', 'ISTDSOVERRIDDEN', item["VOUCHER"].get("ISTDSOVERRIDDEN",'')])
+            
+            if 'ISTCSOVERRIDDEN' in item["VOUCHER"]:
+                sheet.append(['', 'ISTCSOVERRIDDEN', item["VOUCHER"].get("ISTCSOVERRIDDEN",'')])
+            
+            if 'ISTDSTCSCASHVCH' in item["VOUCHER"]:
+                sheet.append(['', 'ISTDSTCSCASHVCH', item["VOUCHER"].get("ISTDSTCSCASHVCH",'')])
+            
+            if 'INCLUDEADVPYMTVCH' in item["VOUCHER"]:
+                sheet.append(['', 'INCLUDEADVPYMTVCH', item["VOUCHER"].get("INCLUDEADVPYMTVCH",'')])
+            
+            if 'ISSUBWORKSCONTRACT' in item["VOUCHER"]:
+                sheet.append(['', 'ISSUBWORKSCONTRACT', item["VOUCHER"].get("ISSUBWORKSCONTRACT",'')])
+            
+            if 'ISVATOVERRIDDEN' in item["VOUCHER"]:
+                sheet.append(['', 'ISVATOVERRIDDEN', item["VOUCHER"].get("ISVATOVERRIDDEN",'')])
+            
+            if 'IGNOREORIGVCHDATE' in item["VOUCHER"]:
+                sheet.append(['', 'IGNOREORIGVCHDATE', item["VOUCHER"].get("IGNOREORIGVCHDATE",'')])
+            
+            if 'ISVATPAIDATCUSTOMS' in item["VOUCHER"]:
+                sheet.append(['', 'ISVATPAIDATCUSTOMS', item["VOUCHER"].get("ISVATPAIDATCUSTOMS",'')])
+            
+            if 'ISDECLAREDTOCUSTOMS' in item["VOUCHER"]:
+                sheet.append(['', 'ISDECLAREDTOCUSTOMS', item["VOUCHER"].get("ISDECLAREDTOCUSTOMS",'')])
+            
+            if 'ISSERVICETAXOVERRIDDEN' in item["VOUCHER"]:
+                sheet.append(['', 'ISSERVICETAXOVERRIDDEN', item["VOUCHER"].get("ISSERVICETAXOVERRIDDEN",'')])
+            
+            if 'ISISDVOUCHER' in item["VOUCHER"]:
+                sheet.append(['', 'ISISDVOUCHER', item["VOUCHER"].get("ISISDVOUCHER",'')])
+            
+            if 'ISEXCISEOVERRIDDEN' in item["VOUCHER"]:
+                sheet.append(['', 'ISEXCISEOVERRIDDEN', item["VOUCHER"].get("ISEXCISEOVERRIDDEN",'')])
+            
+            if 'ISEXCISESUPPLYVCH' in item["VOUCHER"]:
+                sheet.append(['', 'ISEXCISESUPPLYVCH', item["VOUCHER"].get("ISEXCISESUPPLYVCH",'')])
+            
+            if 'ISGSTOVERRIDDEN' in item["VOUCHER"]:
+                sheet.append(['', 'ISGSTOVERRIDDEN', item["VOUCHER"].get("ISGSTOVERRIDDEN",'')])
+            
+            if 'GSTNOTEXPORTED' in item["VOUCHER"]:
+                sheet.append(['', 'GSTNOTEXPORTED', item["VOUCHER"].get("GSTNOTEXPORTED",'')])
+            
+            if 'IGNOREGSTINVALIDATION' in item["VOUCHER"]:
+                sheet.append(['', 'IGNOREGSTINVALIDATION', item["VOUCHER"].get("IGNOREGSTINVALIDATION",'')])
+            
+            if 'ISVATPRINCIPALACCOUNT' in item["VOUCHER"]:
+                sheet.append(['', 'ISVATPRINCIPALACCOUNT', item["VOUCHER"].get("ISVATPRINCIPALACCOUNT",'')])
+            
+            if 'ISBOENOTAPPLICABLE' in item["VOUCHER"]:
+                sheet.append(['', 'ISBOENOTAPPLICABLE', item["VOUCHER"].get("ISBOENOTAPPLICABLE",'')])
+            
+            if 'ISSHIPPINGWITHINSTATE' in item["VOUCHER"]:
+                sheet.append(['', 'ISSHIPPINGWITHINSTATE', item["VOUCHER"].get("ISSHIPPINGWITHINSTATE",'')])
+            
+            if 'ISOVERSEASTOURISTTRANS' in item["VOUCHER"]:
+                sheet.append(['', 'ISOVERSEASTOURISTTRANS', item["VOUCHER"].get("ISOVERSEASTOURISTTRANS",'')])
+            
+            if 'ISDESIGNATEDZONEPARTY' in item["VOUCHER"]:
+                sheet.append(['', 'ISDESIGNATEDZONEPARTY', item["VOUCHER"].get("ISDESIGNATEDZONEPARTY",'')])
+            
+            if 'ISCANCELLED' in item["VOUCHER"]:
+                sheet.append(['', 'ISCANCELLED', item["VOUCHER"].get("ISCANCELLED",'')])
+            
+            if 'HASCASHFLOW' in item["VOUCHER"]:
+                sheet.append(['', 'HASCASHFLOW', item["VOUCHER"].get("HASCASHFLOW",'')])
+            
+            if 'ISPOSTDATED' in item["VOUCHER"]:
+                sheet.append(['', 'ISPOSTDATED', item["VOUCHER"].get("ISPOSTDATED",'')])
+            
+            if 'USETRACKINGNUMBER' in item["VOUCHER"]:
+                sheet.append(['', 'USETRACKINGNUMBER', item["VOUCHER"].get("USETRACKINGNUMBER",'')])
+            
+            if 'ISINVOICE' in item["VOUCHER"]:
+                sheet.append(['', 'ISINVOICE', item["VOUCHER"].get("ISINVOICE",'')])
+            
+            if 'MFGJOURNAL' in item["VOUCHER"]:
+                sheet.append(['', 'MFGJOURNAL', item["VOUCHER"].get("MFGJOURNAL",'')])
+            
+            if 'HASDISCOUNTS' in item["VOUCHER"]:
+                sheet.append(['', 'HASDISCOUNTS', item["VOUCHER"].get("HASDISCOUNTS",'')])
+            
+            if 'ASPAYSLIP' in item["VOUCHER"]:
+                sheet.append(['', 'ASPAYSLIP', item["VOUCHER"].get("ASPAYSLIP",'')])
+            
+            if 'ISCOSTCENTRE' in item["VOUCHER"]:
+                sheet.append(['', 'ISCOSTCENTRE', item["VOUCHER"].get("ISCOSTCENTRE",'')])
+            
+            if 'ISSTXNONREALIZEDVCH' in item["VOUCHER"]:
+                sheet.append(['', 'ISSTXNONREALIZEDVCH', item["VOUCHER"].get("ISSTXNONREALIZEDVCH",'')])
+            
+            if 'ISEXCISEMANUFACTURERON' in item["VOUCHER"]:
+                sheet.append(['', 'ISEXCISEMANUFACTURERON', item["VOUCHER"].get("ISEXCISEMANUFACTURERON",'')])
+            
+            if 'ISBLANKCHEQUE' in item["VOUCHER"]:
+                sheet.append(['', 'ISBLANKCHEQUE', item["VOUCHER"].get("ISBLANKCHEQUE",'')])
+            
+            if 'ISVOID' in item["VOUCHER"]:
+                sheet.append(['', 'ISVOID', item["VOUCHER"].get("ISVOID",'')])
+            
+            if 'ISONHOLD' in item["VOUCHER"]:
+                sheet.append(['', 'ISONHOLD', item["VOUCHER"].get("ISONHOLD",'')])
+            
+            if 'ORDERLINESTATUS' in item["VOUCHER"]:
+                sheet.append(['', 'ORDERLINESTATUS', item["VOUCHER"].get("ORDERLINESTATUS",'')])
+            
+            if 'VATISAGNSTCANCSALES' in item["VOUCHER"]:
+                sheet.append(['', 'VATISAGNSTCANCSALES', item["VOUCHER"].get("VATISAGNSTCANCSALES",'')])
+            
+            if 'VATISPURCEXEMPTED' in item["VOUCHER"]:
+                sheet.append(['', 'VATISPURCEXEMPTED', item["VOUCHER"].get("VATISPURCEXEMPTED",'')])
+            
+            if 'ISVATRESTAXINVOICE' in item["VOUCHER"]:
+                sheet.append(['', 'ISVATRESTAXINVOICE', item["VOUCHER"].get("ISVATRESTAXINVOICE",'')])
+            
+            if 'VATISASSESABLECALCVCH' in item["VOUCHER"]:
+                sheet.append(['', 'VATISASSESABLECALCVCH', item["VOUCHER"].get("VATISASSESABLECALCVCH",'')])
+            
+            if 'ISVATDUTYPAID' in item["VOUCHER"]:
+                sheet.append(['', 'ISVATDUTYPAID', item["VOUCHER"].get("ISVATDUTYPAID",'')])
+            
+            if 'ISDELIVERYSAMEASCONSIGNEE' in item["VOUCHER"]:
+                sheet.append(['', 'ISDELIVERYSAMEASCONSIGNEE', item["VOUCHER"].get("ISDELIVERYSAMEASCONSIGNEE",'')])
+            
+            if 'ISDISPATCHSAMEASCONSIGNOR' in item["VOUCHER"]:
+                sheet.append(['', 'ISDISPATCHSAMEASCONSIGNOR', item["VOUCHER"].get("ISDISPATCHSAMEASCONSIGNOR",'')])
+            
+            if 'ISDELETED' in item["VOUCHER"]:
+                sheet.append(['', 'ISDELETED', item["VOUCHER"].get("ISDELETED",'')])
+            
+            if 'CHANGEVCHMODE' in item["VOUCHER"]:
+                sheet.append(['', 'CHANGEVCHMODE', item["VOUCHER"].get("CHANGEVCHMODE",'')])
+            
+            if 'ALTERID' in item["VOUCHER"]:
+                sheet.append(['', 'ALTERID', item["VOUCHER"].get("ALTERID",'')])
+            
+            if 'MASTERID' in item["VOUCHER"]:
+                sheet.append(['', 'MASTERID', item["VOUCHER"].get("MASTERID",'')])
+            
+            if 'VOUCHERKEY' in item["VOUCHER"]:
+                sheet.append(['', 'VOUCHERKEY', item["VOUCHER"].get("VOUCHERKEY",'')])
+            
+            if 'EXCLUDEDTAXATIONS.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'EXCLUDEDTAXATIONS.LIST', item["VOUCHER"].get("EXCLUDEDTAXATIONS.LIST",'')])
+            
+            if 'OLDAUDITENTRIES.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'OLDAUDITENTRIES.LIST', item["VOUCHER"].get("OLDAUDITENTRIES.LIST",'')])
+            
+            if 'ACCOUNTAUDITENTRIES.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'ACCOUNTAUDITENTRIES.LIST', item["VOUCHER"].get("ACCOUNTAUDITENTRIES.LIST",'')])
+            
+            if 'AUDITENTRIES.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'AUDITENTRIES.LIST', item["VOUCHER"].get("AUDITENTRIES.LIST",'')])
+            
+            if 'DUTYHEADDETAILS.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'DUTYHEADDETAILS.LIST', item["VOUCHER"].get("DUTYHEADDETAILS.LIST",'')])
+            
+            if 'SUPPLEMENTARYDUTYHEADDETAILS.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'SUPPLEMENTARYDUTYHEADDETAILS.LIST', item["VOUCHER"].get("SUPPLEMENTARYDUTYHEADDETAILS.LIST",'')])
+            
+            if 'EWAYBILLDETAILS.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'EWAYBILLDETAILS.LIST', item["VOUCHER"].get("EWAYBILLDETAILS.LIST",'')])
+            
+            if 'INVOICEDELNOTES.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'INVOICEDELNOTES.LIST', item["VOUCHER"].get("INVOICEDELNOTES.LIST",'')])
+            
+            if 'INVOICEORDERLIST.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'INVOICEORDERLIST.LIST', item["VOUCHER"].get("INVOICEORDERLIST.LIST",'')])
+            
+            if 'INVOICEINDENTLIST.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'INVOICEINDENTLIST.LIST', item["VOUCHER"].get("INVOICEINDENTLIST.LIST",'')])
+            
+            if 'ATTENDANCEENTRIES.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'ATTENDANCEENTRIES.LIST', item["VOUCHER"].get("ATTENDANCEENTRIES.LIST",'')])
+            
+            if 'ORIGINVOICEDETAILS.LIST' in item["VOUCHER"]:
+                sheet.append(['', 'ORIGINVOICEDETAILS.LIST', item["VOUCHER"].get("ORIGINVOICEDETAILS.LIST",'')])
+
+        # except:
+        #     pass
+
+        file_name = os.path.basename('./static/Input.xml').split('.')[0] + '.xlsx'
+        output_file_path = os.path.join('./static/output/', file_name)
+        workbook.save(output_file_path)

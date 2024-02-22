@@ -59,61 +59,114 @@ class ConverXMLtoXLSAPIView(APIView):
         # try:
         for item_level_1 in xml_dict['ENVELOPE']["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]:
             response_item_level_1 = check_object_is_dict_or_list(item_level_1)
-            if response_item_level_1 == "D":
-                if len(item_level_1) > 1:
-                    for item_level_2 in item_level_1:
+            if response_item_level_1 == "D" and len(item_level_1) > 1:
 
-                        response_item_level_2 = check_object_is_dict_or_list(item_level_1[item_level_2])
-                        if response_item_level_2 == "D":
-                            if len(item_level_2) > 1:
+                for item_level_2 in item_level_1:
+                    response_item_level_2 = check_object_is_dict_or_list(item_level_1[item_level_2])
+                    if response_item_level_2 == "D" and len(item_level_1[item_level_2]) > 1:
+                        for item_level_3 in item_level_2:
+                           
+                            response_item_level_3 = check_object_is_dict_or_list(item_level_1[item_level_2][item_level_3])
+                            print(response_item_level_3)
+                            if response_item_level_3 == "D" and len(item_level_3) > 1:
+                                print("good")              
+                                print(item_level_3)              
+                                print("good")              
 
+                            elif response_item_level_3 == "D" and len(item_level_3) == 1:
+                                sheet.append(['',item_level_3, item_level_2[item_level_2]])
+                            elif response_item_level_3 == "L":
+                                continue
+                            elif response_item_level_3 == "T"and len(item_level_3) > 1:
+                                continue
+                            elif response_item_level_3 == "T"and len(item_level_3) == 1:
+                                sheet.append(['',item_level_3, item_level_2[item_level_3]])
+                            elif response_item_level_3 == "N":
+                                sheet.append(['',item_level_3, item_level_2[item_level_3]])
+                            else:
+                                continue
+                        
+                    elif response_item_level_2 == "D" and len(item_level_1[item_level_2]) == 1:
+                        sheet.append(['',item_level_2, item_level_1[item_level_2]])
+                    elif response_item_level_2 == "L":
+                        continue
+                    elif response_item_level_2 == "T"and len(item_level_1[item_level_2]) > 1:
+                        sheet.append(['',item_level_2, item_level_1[item_level_2]])
+                    elif response_item_level_2 == "T"and len(item_level_1[item_level_2]) == 1:
+                        sheet.append(['',item_level_2, item_level_1[item_level_2]])
+                    elif response_item_level_1 == "N":
+                        sheet.append(['',item_level_2, item_level_1[item_level_2]])
+                    else:
+                        continue
 
-                                for item_level_3 in item_level_1[item_level_2]:
-                                    response_item_level_3 = check_object_is_dict_or_list(item_level_1[item_level_2][item_level_3])
-                                    if response_item_level_3 in ["D", "T"] and len(item_level_3) > 1:
-                                        for item_level_4 in item_level_3:
-                                            continue
-                                            # response_item_level_4 = check_object_is_dict_or_list(item_level_4[item_level_3])
-                                            # if response_item_level_4 == "D":
-                                            #     if len(item_level_4) > 1:
-
-
-                                            #         for item_level_5 in item_level_4:
-                                            #             response_item_level_5 = check_object_is_dict_or_list(item_level_5[item_level_4])
-                                            #             if response_item_level_5 == "D":
-                                            #                 if len(item_level_5) > 1:
-
-
-                                            #                     for item_level_6 in item_level_5:
-                                            #                         continue
-
-
-                                            #             elif response_item_level_5 == "T":
-                                            #                 sheet.append(['','','','',item_level_5, item_level_4[item_level_5]])
-                                            #             else:
-                                            #                 print(response_item_level_5)
-
-
-                                            # elif response_item_level_4 == "T":
-                                            #     sheet.append(['','','', item_level_4, item_level_3[item_level_4]])
-                                            # else:
-                                            #     print(response_item_level_4)
-
-
-                                    elif response_item_level_3 in ["T", "N"]:
-                                        sheet.append(['','',item_level_1[item_level_2], item_level_1[item_level_2][item_level_3]])
-                                    else:
-                                        print(response_item_level_3)
-
-
-                        elif response_item_level_2 in ["T", "N"]:
-                            sheet.append(['',item_level_2, item_level_1[item_level_2]])
-                        else:
-                            print(response_item_level_2)
-                else:
-                    continue
+            elif response_item_level_1 == "D" and len(item_level_1) == 1:
+                continue
+            elif response_item_level_1 == "L":
+                continue
+            elif response_item_level_1 == "T"and len(item_level_1) > 1:
+                continue
+            elif response_item_level_1 == "T"and len(item_level_1) == 1:
+                continue
+            elif response_item_level_1 == "N":
+                continue
             else:
-                print("bad")
+                continue
+
+
+            #     if len(item_level_1) > 1:
+            #         for item_level_2 in item_level_1:
+
+            #             response_item_level_2 = check_object_is_dict_or_list(item_level_1[item_level_2])
+            #             if response_item_level_2 == "D":
+            #                 if len(item_level_2) > 1:
+
+
+            #                     for item_level_3 in item_level_1[item_level_2]:
+            #                         response_item_level_3 = check_object_is_dict_or_list(item_level_1[item_level_2][item_level_3])
+            #                         if response_item_level_3 == "D":
+            #                             for item_level_4 in item_level_3:
+            #                                 continue
+            #                                 # response_item_level_4 = check_object_is_dict_or_list(item_level_4[item_level_3])
+            #                                 # if response_item_level_4 == "D":
+            #                                 #     if len(item_level_4) > 1:
+
+
+            #                                 #         for item_level_5 in item_level_4:
+            #                                 #             response_item_level_5 = check_object_is_dict_or_list(item_level_5[item_level_4])
+            #                                 #             if response_item_level_5 == "D":
+            #                                 #                 if len(item_level_5) > 1:
+
+
+            #                                 #                     for item_level_6 in item_level_5:
+            #                                 #                         continue
+
+
+            #                                 #             elif response_item_level_5 == "T":
+            #                                 #                 sheet.append(['','','','',item_level_5, item_level_4[item_level_5]])
+            #                                 #             else:
+            #                                 #                 print(response_item_level_5)
+
+
+            #                                 # elif response_item_level_4 == "T":
+            #                                 #     sheet.append(['','','', item_level_4, item_level_3[item_level_4]])
+            #                                 # else:
+            #                                 #     print(response_item_level_4)
+
+
+            #                         elif response_item_level_3  == "T":
+            #                             sheet.append(['','',item_level_1[item_level_2], item_level_1[item_level_2][item_level_3]])
+            #                         else:
+            #                             print(response_item_level_3)
+
+
+            #             elif response_item_level_2 in ["T", "N"]:
+            #                 sheet.append(['',item_level_2, item_level_1[item_level_2]])
+            #             else:
+            #                 print(response_item_level_2)
+            #     else:
+            #         continue
+            # else:
+            #     print("bad")
         # except:
         #     pass
 
